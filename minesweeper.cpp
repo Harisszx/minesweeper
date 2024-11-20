@@ -5,6 +5,10 @@
 using namespace std;
 using namespace sf;
 
+/* Please refer to the project documentation to fully understand the functionality(hope to provide it) of the program. 
+The comments provide limited information(and are for the project partners), and may not be enough 
+to make changes to the code.*/
+
 class tile 
 {
 private:
@@ -16,10 +20,10 @@ private:
 public:
     tile() 
     {
-        ismine = false;
-        iscovered = true;
-        isflagged = false;
-        adjacentmines = 0;
+        ismine = false; // setting it to false, because no mines are present on the board initially (using rand() to place the mines randomly on the board).
+        iscovered = true; // setting it to true, because all tiles are covered at the start of the game.
+        isflagged = false; // setting it to false, this will toggle on the right click.
+        adjacentmines = 0; // this is will change based on the number that is appearing on the board(1 means 1 mine is attached to it)
     }
 
     bool get_ismine() 
@@ -84,6 +88,6 @@ public:
 
 int main()
 {
-    board Board1;
+    board Board1; // Creates a object named Board1 with all the predefined properties in the board class;
 
 }
