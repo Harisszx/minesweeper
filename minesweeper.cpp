@@ -67,7 +67,7 @@ public:
 class board
 {
 private:
-    static const int ROWS = 5;
+    static const int ROWS = 5; 
     static const int COLUMNS = 5;
     static const int TOTALMINES = 7;
     tile grid[ROWS][COLUMNS];
@@ -75,7 +75,7 @@ private:
     bool gameover;
 
 public:
-    board() : window(VideoMode(250,250), "Minesweeper") // Lentght, and Width of the window can be changed from here. Just increase it by the ratios as you increase the rows, and columns.
+    board() : window(VideoMode(250,250), "Minesweeper") // Length, and Width of the window can be changed from here. Just increase it by the ratios as you increase the rows, and columns.
     {
         gameover = false; // Setting this condtion to false in the constructor to make sure that the program runs atleast once
     }
