@@ -71,11 +71,11 @@ private:
     static const int COLUMNS = 5;
     static const int TOTALMINES = 7;
     tile grid[ROWS][COLUMNS];
-    RenderWindow window;
+    RenderWindow window; // SFML keyword to make a window on which we can display our graphics
     bool gameover;
 
 public:
-    board() : window(VideoMode(250,250), "Minesweeper")
+    board() : window(VideoMode(250,250), "Minesweeper") // Lentght, and Width of the window can be changed from here. Just increase it by the ratios as you increase the rows, and columns.
     {
         gameover = false; // Setting this condtion to false in the constructor to make sure that the program runs atleast once
     }
