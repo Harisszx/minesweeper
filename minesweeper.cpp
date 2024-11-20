@@ -64,7 +64,26 @@ public:
     }
 };
 
+class board
+{
+private:
+    static const int ROWS = 5;
+    static const int COLUMNS = 5;
+    static const int TOTALMINES = 7;
+    tile grid[ROWS][COLUMNS];
+    RenderWindow window;
+    bool gameover;
+
+public:
+    board() : window(VideoMode(250,250), "Minesweeper")
+    {
+        gameover = false; // Setting this condtion to false in the constructor to make sure that the program runs atleast once
+    }
+
+};
+
 int main()
 {
-    
+    board Board1;
+
 }
