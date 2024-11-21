@@ -110,7 +110,7 @@ public:
         }
     }
 
-    void putadjacentmines() // Function to make sure that each number has only one mine with it - what we call the adjacent mines. It is one of the features of the minesweeper game
+    void putadjacentmines() // Function to make sure that each number has the exact number of mines associated with it - what we call the adjacent mines. It is one of the features of the minesweeper game
     {
         for (int x = 0; x < ROWS; x++) // This runs through all the rows of the board 
         {
@@ -126,7 +126,7 @@ public:
                             {
                                 if (!(dx == 0 && dy == 0)) // Skips the current tile, along which we are running the check 
                                 {
-                                    if (grid[x + dx][y + dy].get_ismine()) // this checks if there is a mine around the tile 
+                                    if (grid[x + dx][y + dy].get_ismine()) // this checks if there is a mine around the tile(the address of the surrounding mines y+dy basically tells you about the sath wali mine) 
                                     {
                                         grid[x][y].set_adjacentmines(grid[x][y].get_adjacentmines() + 1); // If there is a mine, then it updates the adjacent mines around the tile. How it does that is calls the get_adjacent mines function which returns the adjacent mines which is set to 0, adds one to it, and then it calls the set_adjacent mines which updates the value of the adjacent mines. Does it for all the columns, and the rows as the loops run. This is how we find out how many mines are associated with each tile
                                     }
