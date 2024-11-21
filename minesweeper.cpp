@@ -82,7 +82,7 @@ public:
     board() : window(VideoMode(250,250), "Minesweeper") // Length, and Width of the window can be changed from here. Just increase it by the ratios as you increase the rows, and columns.
     {
         gameover = false; // Setting this condtion to false in the constructor to make sure that the program runs atleast once
-        initialize();
+        initialize(); // Places the mines on the board, uses a dynamic array to store the positions of the vectors. Uses the rand function to randomly place the rows, and columns on the board.
         putadjacentmines();
     }
 
