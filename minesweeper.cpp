@@ -89,7 +89,7 @@ public:
     void reset() // Very convinient to reset the game using this, otherwise all the compilation needs to be done again. This function sets all the proeperties to the initial condition.
     {
         gameover = false;
-        initialize();  
+        initialize(); 
         putadjacentmines();
     }
 
@@ -241,7 +241,7 @@ public:
                 }
             }
 
-            if (gameover) 
+            if (gameover) // 
             {
                 Text gameOverText("Game Over!", font, 48);
                 gameOverText.setCharacterSize(36);
@@ -293,6 +293,6 @@ public:
 int main()
 {
     board Board1; // Creates a object named Board1 with all the predefined properties in the board class;
-    Board1.display_grid();
+    Board1.display_grid(); // the display grid function is called after the board has been setup setup after all the mines have been setup. Details of the function can be found infront of the function.
     return 0;
 }
