@@ -110,7 +110,7 @@ public:
         }
     }
 
-    void putadjacentmines() 
+    void putadjacentmines() // Function to make sure that each number has only one mine with it!
     {
         for (int x = 0; x < ROWS; x++) 
         {
