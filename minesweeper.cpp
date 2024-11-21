@@ -39,12 +39,12 @@ public:
         return isflagged; 
     }
     
-    int get_adjacentmines() 
+    int get_adjacentmines() // Details in the adjacent mines function. Basic Purpose is to keep the track of how many mines are associated with a function
     {
         return adjacentmines; 
     }
 
-    void set_adjacentmines(int mines) 
+    void set_adjacentmines(int mines) // Responsible for increasing the count of the mines to make sure we remember how many mines are associated with the function
     { 
         adjacentmines = mines; 
     }
@@ -110,22 +110,29 @@ public:
         }
     }
 
-    void putadjacentmines() // Function to make sure that each number has only one mine with it!
+    void putadjacentmines() // Function to make sure that each number has only one mine with it - what we call the adjacent mines. It is one of the features of the minesweeper game
     {
-        for (int x = 0; x < ROWS; x++) 
+        for (int x = 0; x < ROWS; x++) // This runs through all the rows of the board 
         {
-            for (int y = 0; y < COLUMNS; y++)
+            for (int y = 0; y < COLUMNS; y++) // This runs through the columns of every row 
             {
-                if (!grid[x][y].get_ismine()) 
+                if (!grid[x][y].get_ismine()) // Very important, this checks for if there is a mine at the tile. Basically how this works is this calls the function at the location x, and y, and returns the status of the tile at the function. If it is false(means), there is no mine then it runs, otherwise it skips over the tile, as we need to calculate the number of the adjacent mines.
                 {
-                    for (int dx = -1; dx <= 1; dx++) 
+                    for (int dx = -1; dx <= 1; dx++) // Runs for three times(because each tile has two tiles, and for dx=0 means the tile itself), this is for the x-ccordinate of the surrounding tiles
                     {
-                        for (int dy = -1; dy <= 1; dy++) 
+                        for (int dy = -1; dy <= 1; dy++) // Same logic as for the rows, but in terms of the columns
                         {
-                            if (x + dx >= 0 && x + dx < ROWS && y + dy >= 0 && y + dy < COLUMNS && !(dx == 0 && dy == 0) && grid[x + dx][y + dy].get_ismine()) 
+                            if (x + dx >= 0 && x + dx < ROWS && y + dy >= 0 && y + dy < COLUMNS) // Very important(checks for the lower, and the higher bounds) 
                             {
-                                grid[x][y].set_adjacentmines(grid[x][y].get_adjacentmines() + 1);
+                                if (!(dx == 0 && dy == 0)) // Skips the current tile, along which we are running the check 
+                                {
+                                    if (grid[x + dx][y + dy].get_ismine()) // this checks if there is a mine around the tile 
+                                    {
+                                        grid[x][y].set_adjacentmines(grid[x][y].get_adjacentmines() + 1); // If there is a mine, then it updates the adjacent mines around the tile. How it does that is calls the get_adjacent mines function which returns the adjacent mines which is set to 0, adds one to it, and then it calls the set_adjacent mines which updates the value of the adjacent mines. Does it for all the columns, and the rows as the loops run. This is how we find out how many mines are associated with each tile
+                                    }
+                                }
                             }
+
                         }
                     }
                 }
