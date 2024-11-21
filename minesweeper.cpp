@@ -75,7 +75,7 @@ private:
     static const int COLUMNS = 5; // Fixed number of the COLUMNS
     static const int TOTALMINES = 7; // The total number of mines that will be placed on the board.
     tile grid[ROWS][COLUMNS];
-    RenderWindow window; // SFML keyword to make a window on which we can display our graphics
+    RenderWindow window; // SFML keyword to make a window on which we can display our graphics - setting the properties according to the rows, and the columns 
     bool gameover;
 
 public:
