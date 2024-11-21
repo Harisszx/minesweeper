@@ -299,7 +299,7 @@ public:
 
 int main()
 {
-    board Board1; // Creates a object named Board1 with all the predefined properties in the board class;
+    board Board1; // Creates a object named Board1 with all the predefined properties in the board class; The code runs through till the put_adjacent mines function, and everything is setup;
     Board1.display_grid(); // the display grid function is called after the board has been setup setup after all the mines have been setup. Details of the function can be found infront of the function.
     return 0;
 }
