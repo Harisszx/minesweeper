@@ -86,10 +86,10 @@ public:
         putadjacentmines();
     }
 
-    void reset() 
+    void reset() // Very convinient to reset the game using this, otherwise all the compilation needs to be done again. This function sets all the proeperties to the initial condition.
     {
         gameover = false;
-        initialize();
+        initialize();  
         putadjacentmines();
     }
 
