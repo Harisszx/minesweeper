@@ -162,7 +162,7 @@ public:
         while (window.isOpen()) // Condition is placed to check if the window is open or close - the whole structure is based on how the user interacts with the game - the user clicks are manipulated in this section
         {
             Event this_event;
-            while (window.pollEvent(this_event)) // Pulls the next event in the memory - the sequence in the which the user(you) have trigerred the events
+            while (window.pollEvent(this_event)) // Pulls the next event in the memory - the sequence in the which the user(you) have trigerred the events - breaks if there is no event
             {
                 if (this_event.type == Event::Closed) // condition to check, if the user has clicked the close button(x)
                 {
