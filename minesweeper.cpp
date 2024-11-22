@@ -142,7 +142,7 @@ public:
 
     void display_grid() 
     {
-        Texture coverpng, flagpng, bombpng; // Loading the necessary images into the memory
+        Texture coverpng, flagpng, bombpng; // Loading the necessary images into the memory, and alloting them a variable name - so that can be rendered easily during the process
         coverpng.loadFromFile("MINESWEEPER_X.png");
         flagpng.loadFromFile("MINESWEEPER_F.png"); // Took these images from a library on the internet(to add graphics to the game)
         bombpng.loadFromFile("MINESWEEPER_M.png");
@@ -171,7 +171,7 @@ public:
 
                 if (this_event.type == Event::MouseButtonPressed && !gameover) // Processes the mosue buttons pressing, the only addition is we have entered a safety check which checks that gameover is false, added that in case as (!gameover)
                 {
-                    int x_pos = this_event.mouseButton.x / 50; // Converts the mouse click coordinates into the grid coordinates.
+                    int x_pos = this_event.mouseButton.x / 50; // Converts the window click coordinates into the grid coordinates.
                     int y_pos = this_event.mouseButton.y / 50; 
 
                     if (x_pos >= 0 && x_pos < ROWS && y_pos >= 0 && y_pos < COLUMNS) // again checking if the click is in the bounds, before this the game had errors even if you clicked on top of the window, it would go out of bounds 
@@ -212,7 +212,7 @@ public:
             {
                 for (int y = 0; y < COLUMNS; y++) 
                 {
-                    int x_pos = x * 50;
+                    int x_pos = x * 50; // converting the grid coordinates into the mouse click coordinates to make sure that the pictures are placed at the correct place
                     int y_pos = y * 50;
                     Sprite tilesdisplay;
 
@@ -231,7 +231,7 @@ public:
                             window.draw(tilesdisplay);
                         }
                     } 
-                    else 
+                    else // if it is uncovered, then checks if it a mine or a number
                     {
                         if (grid[x][y].get_ismine()) // if it is a mine, then it uses the bomb png   
                         {
@@ -240,7 +240,7 @@ public:
                             tilesdisplay.setPosition(x_pos, y_pos);
                             window.draw(tilesdisplay);
                         } 
-                        else  
+                        else  // very important - as this needs to correspond to the number of mines associated with the tile, so it pulls the number of adjacent mines from the function using the get_adjacent mines, and gives it to the uncoverpng which is an array stores with all the number images, so it displays the corresponnding number accordingly
                         {
                             tilesdisplay.setTexture(uncoverpng[grid[x][y].get_adjacentmines()]);
                             tilesdisplay.setScale(50.0f / tilesdisplay.getLocalBounds().width, 50.0f / tilesdisplay.getLocalBounds().height);
@@ -251,49 +251,49 @@ public:
                 }
             }
 
-            if (gameover) // 
+            if (gameover) // this is placed here, and not inside the reset function is becasue windows.clear was not working on there, and the code was running into some problems 
             {
-                Text gameOverText("Game Over!", font, 48);
-                gameOverText.setCharacterSize(36);
-                gameOverText.setFillColor(Color::Red);
-                gameOverText.setPosition((COLUMNS * 50) / 2 - 100, (ROWS * 50) / 2 - 50);
-                window.draw(gameOverText);
+                Text gameovertext("Game Over!", font, 48);
+                gameovertext.setCharacterSize(36);
+                gameovertext.setFillColor(Color::Red);
+                gameovertext.setPosition((COLUMNS * 50) / 2 - 100, (ROWS * 50) / 2 - 50);
+                window.draw(gameovertext);
 
                 Text retryText("Do you want to retry? (y/n)", font, 24);
                 retryText.setPosition((COLUMNS * 50) / 2 - 100, (ROWS * 50) / 2 + 50);
                 window.draw(retryText);
             }
 
-            window.display();
+            window.display(); // Necessary to display all the stuff to the user, took us lives to figure this thing out
         }
     }
 
-    void uncover(int row, int column) 
+    void uncover(int row, int column) // this function is called from inside the while(windowisOpen) loop - this is a recursive funtion which ensures that if there are no mines associated with a tile then we need to uncover till we find a mine so we use the same property of iterating over the rows, and columns - more detail in the PDF
     {
-        if (row < 0 || row >= ROWS || column < 0 || column >= COLUMNS || !grid[row][column].get_iscovered()) 
+        if (row < 0 || row >= ROWS || column < 0 || column >= COLUMNS || !grid[row][column].get_iscovered()) // this is necesssary as it checks for the bounderies of the rows, and the columns, and also sees if the tile is already uncovered so returns the value.
         {
             return;
         }
 
-        grid[row][column].uncover_tile();
+        grid[row][column].uncover_tile(); // calls this fucntion in the tiles, and changes the status of the iscovered function
         
-        if (grid[row][column].get_ismine()) 
+        if (grid[row][column].get_ismine())// checks if the tile is mine using the status of the get_ismine function 
         {
             return;
         }
 
-        if (grid[row][column].get_adjacentmines() > 0) 
+        if (grid[row][column].get_adjacentmines() > 0) // if the function has some mines associated with it then, it only uncovers that tile, and leaves the system. 
         {
             return;
         }
 
-        for (int dx = -1; dx <= 1; dx++) 
+        for (int dx = -1; dx <= 1; dx++) // iterates over the rows, and columns in the same way(that we did to check if there are any adjacent mines associated to a tile)
         {
             for (int dy = -1; dy <= 1; dy++) 
             {
                 if (dx != 0 || dy != 0) 
                 {
-                    uncover(row + dx, column + dy);
+                    uncover(row + dx, column + dy); // this is a recursive calls to uncover the mines when the nearing tiles of the current tile aren't a mine, and there isn't any mine associated to them, uncovers till the mine is uncountered.
                 }
             }
         }
@@ -303,6 +303,6 @@ public:
 int main()
 {
     board Board1; // Creates a object named Board1 with all the predefined properties in the board class; The code runs through till the put_adjacent mines function, and everything is setup;
-    Board1.display_grid(); // the display grid function is called after the board has been setup
+    Board1.display_grid(); // the display grid function is called after the board has been setup - deals with all the functionalities of the minesweeper
     return 0;
 }
