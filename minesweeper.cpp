@@ -194,21 +194,21 @@ public:
                     }
                 }
 
-                if (this_event.type == Event::KeyPressed && gameover)  // The new reset funtion, as soon as this Y is pressed the board is reintialized using the reset function, and this loop continues, but if N is pressed it closes the window - tried only switching the value of the gameover but the uncovered tiles remain there so it's very important to call the reset function
+                if (this_event.type == Event::KeyPressed && gameover)  // The new reset funtion, saves the hassle of recompiling again and again
                 {
                     if (this_event.key.code == Keyboard::Y)
                     {
-                        reset();
-                    } else if (this_event.key.code == Keyboard::N) // Press N, and then the window disappears 
+                        reset(); // as soon as Y is pressed the board is reintialized using the reset function, and this loop continues, but if N is pressed it closes the window - tried only switching the value of the gameover but the uncovered tiles remain there so it's very important to call the reset function
+                    } else if (this_event.key.code == Keyboard::N) // Press N, and then the window closes
                     {
                         window.close();
                     }
                 }
             }
 
-            window.clear(Color::Black);
+            window.clear(Color::Black); // Resets the frame, before displaying the next frame. Added this because sometimes the game was having uncovered tiles all there before even it was dsiplayed
 
-            for (int x = 0; x < ROWS; x++) 
+            for (int x = 0; x < ROWS; x++) // to display the images on the board
             {
                 for (int y = 0; y < COLUMNS; y++) 
                 {
@@ -216,14 +216,14 @@ public:
                     int y_pos = y * 50;
                     Sprite tilesdisplay;
 
-                    if (grid[x][y].get_iscovered())
+                    if (grid[x][y].get_iscovered()) // if it is a covered tile, then it uses the cover png
                     {
                         tilesdisplay.setTexture(coverpng);
                         tilesdisplay.setScale(50.0f / tilesdisplay.getLocalBounds().width, 50.0f / tilesdisplay.getLocalBounds().height);
                         tilesdisplay.setPosition(x_pos, y_pos);
                         window.draw(tilesdisplay);
 
-                        if (grid[x][y].get_isflagged()) 
+                        if (grid[x][y].get_isflagged())  // flagged tile then it uses a flag png
                         {
                             tilesdisplay.setTexture(flagpng);
                             tilesdisplay.setScale(50.0f / tilesdisplay.getLocalBounds().width, 50.0f / tilesdisplay.getLocalBounds().height);
@@ -233,14 +233,14 @@ public:
                     } 
                     else 
                     {
-                        if (grid[x][y].get_ismine()) 
+                        if (grid[x][y].get_ismine()) // if it is a mine, then it uses the bomb png   
                         {
                             tilesdisplay.setTexture(bombpng);
                             tilesdisplay.setScale(50.0f / tilesdisplay.getLocalBounds().width, 50.0f / tilesdisplay.getLocalBounds().height);
                             tilesdisplay.setPosition(x_pos, y_pos);
                             window.draw(tilesdisplay);
                         } 
-                        else 
+                        else  
                         {
                             tilesdisplay.setTexture(uncoverpng[grid[x][y].get_adjacentmines()]);
                             tilesdisplay.setScale(50.0f / tilesdisplay.getLocalBounds().width, 50.0f / tilesdisplay.getLocalBounds().height);
