@@ -208,7 +208,7 @@ public:
 
             window.clear(Color::Black); // Resets the frame, before displaying the next frame. Added this because sometimes the game was having uncovered tiles all there before even it was dsiplayed
 
-            for (int x = 0; x < ROWS; x++) // to display the images on the board
+            for (int x = 0; x < ROWS; x++) // to display the images on the board - reminder these loops are inside the main while loop which is checking if the window is open
             {
                 for (int y = 0; y < COLUMNS; y++) 
                 {
