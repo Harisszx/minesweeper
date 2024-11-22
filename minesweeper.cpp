@@ -7,7 +7,7 @@ using namespace sf;
 
 /* Please refer to the project documentation to fully understand the functionality(hope to provide it) of the program. 
 The comments provide limited information(and are for the project partners), and may not be enough 
-to make changes to the code.*/
+to make changes to the code, but can definitly help you provide an understanding of the project*/
 
 class tile 
 {
@@ -34,7 +34,7 @@ public:
     { 
         return iscovered; 
     }
-    bool get_isflagged() 
+    bool get_isflagged() // used for a check in the display grid, to make sure that the flagged tile can't be revealed
     {
         return isflagged; 
     }
@@ -59,7 +59,7 @@ public:
         iscovered = false; 
     }
 
-    void toggle_flag() 
+    void toggle_flag() // checks if the mine is covered or not. If it is then, flips the value of the isflagged varaible
     {
         if (iscovered) 
         { 
@@ -142,62 +142,65 @@ public:
 
     void display_grid() 
     {
-        Texture coveredTexture, flagTexture, bombTexture;
-        coveredTexture.loadFromFile("MINESWEEPER_X.png");
-        flagTexture.loadFromFile("MINESWEEPER_F.png");
-        bombTexture.loadFromFile("MINESWEEPER_M.png");
+        Texture coverpng, flagpng, bombpng; // Loading the necessary images into the memory
+        coverpng.loadFromFile("MINESWEEPER_X.png");
+        flagpng.loadFromFile("MINESWEEPER_F.png"); // Took these images from a library on the internet(to add graphics to the game)
+        bombpng.loadFromFile("MINESWEEPER_M.png");
 
-        Texture uncoveredTexture[9];
+        Texture uncoverpng[9]; // declared this as an array so we can easily create a different image on each section of the array
         for (int x = 0; x < 9; x++) 
         {
-            uncoveredTexture[x].loadFromFile("MINESWEEPER_" + to_string(x) + ".png");
+            uncoverpng[x].loadFromFile("MINESWEEPER_" + to_string(x) + ".png"); // Make sure you don't change this or the naming of the image files, that may lead to a lot of errors
         }
 
         Font font;
-        if (!font.loadFromFile("Roboto-Black.ttf")) 
+        if (!font.loadFromFile("Roboto-Black.ttf")) // Font has already been downloaded, but have set up a check in case the font file is missing 
         {
             cout << "Download Roboto - Black font please." << endl;
         }
 
-        while (window.isOpen()) 
+        while (window.isOpen()) // Condition is placed to check if the window is open or close - the whole structure is based on how the user interacts with the game - the user clicks are manipulated in this section
         {
             Event this_event;
-            while (window.pollEvent(this_event)) 
+            while (window.pollEvent(this_event)) // Pulls the next event in the memory - the sequence in the which the user(you) have trigerred the events
             {
-                if (this_event.type == Event::Closed) 
+                if (this_event.type == Event::Closed) // condition to check, if the user has clicked the close button(x)
                 {
                     window.close();
                 }
 
-                if (this_event.type == Event::MouseButtonPressed && !gameover) 
+                if (this_event.type == Event::MouseButtonPressed && !gameover) // Processes the mosue buttons pressing, the only addition is we have entered a safety check which checks that gameover is false, added that in case as (!gameover)
                 {
-                    int x_pos = this_event.mouseButton.x / 50;
-                    int y_pos = this_event.mouseButton.y / 50;
+                    int x_pos = this_event.mouseButton.x / 50; // Converts the mouse click coordinates into the grid coordinates.
+                    int y_pos = this_event.mouseButton.y / 50; 
 
-                    if (x_pos >= 0 && x_pos < ROWS && y_pos >= 0 && y_pos < COLUMNS) 
+                    if (x_pos >= 0 && x_pos < ROWS && y_pos >= 0 && y_pos < COLUMNS) // again checking if the click is in the bounds, before this the game had errors even if you clicked on top of the window, it would go out of bounds 
                     {
-                        if (this_event.mouseButton.button == Mouse::Left) 
+                        if (this_event.mouseButton.button == Mouse::Left) // to uncover the tile(left-click to uncover the tile)
                         {
-                            if (!grid[x_pos][y_pos].get_isflagged()) 
+                            if (!grid[x_pos][y_pos].get_isflagged()) // to check if the tile is flagged or not, it's important as flagged tiles can't be revealed 
                             {
-                                uncover(x_pos, y_pos);
-                                if (grid[x_pos][y_pos].get_ismine()) 
+                                uncover(x_pos, y_pos); // uncover the tiles using the uncover function
+                                if (grid[x_pos][y_pos].get_ismine()) // checks the tile is a mine, using the get_ismine function in the tiles
                                 {
-                                    gameover = true;
+                                    gameover = true; // if it is then returns the value of the gameover variable to the true, so this loop breaks on the next run
                                 }
                             }
                         } 
-                        else if (this_event.mouseButton.button == Mouse::Right)
+                        else if (this_event.mouseButton.button == Mouse::Right) // right click is used to toggle the flag
                         {
-                            grid[x_pos][y_pos].toggle_flag();
+                            grid[x_pos][y_pos].toggle_flag(); // calls the toggle_flag function which updates the value of the isflagged variable, which is important as the get_isflagged function returns the same value, which is used for the check to not reveal the flagged files
                         }
                     }
                 }
 
-                if (this_event.type == Event::KeyPressed && gameover) {
-                    if (this_event.key.code == Keyboard::Y) {
+                if (this_event.type == Event::KeyPressed && gameover)  // The new reset funtion, as soon as this Y is pressed the board is reintialized using the reset function, and this loop continues, but if N is pressed it closes the window - tried only switching the value of the gameover but the uncovered tiles remain there so it's very important to call the reset function
+                {
+                    if (this_event.key.code == Keyboard::Y)
+                    {
                         reset();
-                    } else if (this_event.key.code == Keyboard::N) {
+                    } else if (this_event.key.code == Keyboard::N) // Press N, and then the window disappears 
+                    {
                         window.close();
                     }
                 }
@@ -211,38 +214,38 @@ public:
                 {
                     int x_pos = x * 50;
                     int y_pos = y * 50;
-                    Sprite tileSprite;
+                    Sprite tilesdisplay;
 
                     if (grid[x][y].get_iscovered())
                     {
-                        tileSprite.setTexture(coveredTexture);
-                        tileSprite.setScale(50.0f / tileSprite.getLocalBounds().width, 50.0f / tileSprite.getLocalBounds().height);
-                        tileSprite.setPosition(x_pos, y_pos);
-                        window.draw(tileSprite);
+                        tilesdisplay.setTexture(coverpng);
+                        tilesdisplay.setScale(50.0f / tilesdisplay.getLocalBounds().width, 50.0f / tilesdisplay.getLocalBounds().height);
+                        tilesdisplay.setPosition(x_pos, y_pos);
+                        window.draw(tilesdisplay);
 
                         if (grid[x][y].get_isflagged()) 
                         {
-                            tileSprite.setTexture(flagTexture);
-                            tileSprite.setScale(50.0f / tileSprite.getLocalBounds().width, 50.0f / tileSprite.getLocalBounds().height);
-                            tileSprite.setPosition(x_pos, y_pos);
-                            window.draw(tileSprite);
+                            tilesdisplay.setTexture(flagpng);
+                            tilesdisplay.setScale(50.0f / tilesdisplay.getLocalBounds().width, 50.0f / tilesdisplay.getLocalBounds().height);
+                            tilesdisplay.setPosition(x_pos, y_pos);
+                            window.draw(tilesdisplay);
                         }
                     } 
                     else 
                     {
                         if (grid[x][y].get_ismine()) 
                         {
-                            tileSprite.setTexture(bombTexture);
-                            tileSprite.setScale(50.0f / tileSprite.getLocalBounds().width, 50.0f / tileSprite.getLocalBounds().height);
-                            tileSprite.setPosition(x_pos, y_pos);
-                            window.draw(tileSprite);
+                            tilesdisplay.setTexture(bombpng);
+                            tilesdisplay.setScale(50.0f / tilesdisplay.getLocalBounds().width, 50.0f / tilesdisplay.getLocalBounds().height);
+                            tilesdisplay.setPosition(x_pos, y_pos);
+                            window.draw(tilesdisplay);
                         } 
                         else 
                         {
-                            tileSprite.setTexture(uncoveredTexture[grid[x][y].get_adjacentmines()]);
-                            tileSprite.setScale(50.0f / tileSprite.getLocalBounds().width, 50.0f / tileSprite.getLocalBounds().height);
-                            tileSprite.setPosition(x_pos, y_pos);
-                            window.draw(tileSprite);
+                            tilesdisplay.setTexture(uncoverpng[grid[x][y].get_adjacentmines()]);
+                            tilesdisplay.setScale(50.0f / tilesdisplay.getLocalBounds().width, 50.0f / tilesdisplay.getLocalBounds().height);
+                            tilesdisplay.setPosition(x_pos, y_pos);
+                            window.draw(tilesdisplay);
                         }
                     }
                 }
@@ -300,6 +303,6 @@ public:
 int main()
 {
     board Board1; // Creates a object named Board1 with all the predefined properties in the board class; The code runs through till the put_adjacent mines function, and everything is setup;
-    Board1.display_grid(); // the display grid function is called after the board has been setup setup after all the mines have been setup. Details of the function can be found infront of the function.
+    Board1.display_grid(); // the display grid function is called after the board has been setup
     return 0;
 }
