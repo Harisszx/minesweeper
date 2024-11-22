@@ -304,5 +304,5 @@ int main()
 {
     board Board1; // Creates a object named Board1 with all the predefined properties in the board class; The code runs through till the put_adjacent mines function, and everything is setup;
     Board1.display_grid(); // the display grid function is called after the board has been setup - deals with all the functionalities of the minesweeper
-    return 0;
+    return 0; // finally this marks the end of the program - outcome - I got known as an SFML expert(psff I set-up the SFML using 5 tutorials) - should make a tutorial myself now!
 }
