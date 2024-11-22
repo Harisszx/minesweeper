@@ -259,8 +259,8 @@ public:
                 gameovertext.setPosition((COLUMNS * 50) / 2 - 100, (ROWS * 50) / 2 - 50);
                 window.draw(gameovertext);
 
-                Text retryText("Do you want to retry? (y/n)", font, 24);
-                retryText.setPosition((COLUMNS * 50) / 2 - 100, (ROWS * 50) / 2 + 50);
+                Text retryText("Do you want to retry? (y/n)", font, 20);
+                retryText.setPosition((COLUMNS * 50) / 2 - 120, (ROWS * 50) / 2 + 40);
                 window.draw(retryText);
             }
 
