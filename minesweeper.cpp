@@ -95,6 +95,14 @@ public:
 
     void initialize() 
     {
+        for (int x = 0; x < ROWS; x++) 
+        {
+            for (int y = 0; y < COLUMNS; y++) 
+            {
+                grid[x][y] = tile(); // This is very important. It sets all the values of the tiles to default - before this we were having a error with the reset function
+            }
+        }
+        
         srand(time(0));
         vector<int> mine_positions; // Dynamic array of integers that will store the positions of the mines on board
         while (mine_positions.size() < TOTALMINES) // Making sure that everything is not a mine. :)
